@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="64" viewBox="0 0 240 64" role="img" aria-label="Capability Matrix logo - dark">
+  <title>Capability Matrix (dark)</title>
+  <!-- Dark-mode wrapper referencing the provided PNG. Background is a dark rect so the PNG sits on dark surface. -->
+  <rect width="240" height="64" rx="6" fill="#0b0b0d" />
+  <image href="/img/logo.kaara.png" x="0" y="0" width="240" height="64" preserveAspectRatio="xMidYMid meet" />
+</svg>

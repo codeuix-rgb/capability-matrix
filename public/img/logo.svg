@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="64" viewBox="0 0 240 64" role="img" aria-label="Capability Matrix logo">
+  <title>Capability Matrix</title>
+  <!-- Wrapper SVG that references the provided PNG logo. This keeps the original artwork while providing an SVG entrypoint. -->
+  <defs>
+    <style type="text/css"><![CDATA[
+      .bg { fill: none; }
+    ]]></style>
+  </defs>
+  <rect width="240" height="64" class="bg" />
+  <image href="/img/logo.kaara.png" x="0" y="0" width="240" height="64" preserveAspectRatio="xMidYMid meet" />
+</svg>
