@@ -1,7 +1,4 @@
-import axios from "axios";
 import { buildDashboardSummary, generateCertifications, generateEmployees, generateProjects, generateSkills, generateTraining } from "@/lib/mock-data";
-
-const api = axios.create({ baseURL: "https://mock.local" });
 
 export async function fetchDashboardData() {
   const employees = generateEmployees(100);
@@ -21,21 +18,21 @@ export async function fetchDashboardData() {
 }
 
 export async function fetchEmployees() {
-  return api.get("/employees").then(() => generateEmployees(100));
+  return generateEmployees(100);
 }
 
 export async function fetchSkills() {
-  return api.get("/skills").then(() => generateSkills(200));
+  return generateSkills(200);
 }
 
 export async function fetchProjects() {
-  return api.get("/projects").then(() => generateProjects(25));
+  return generateProjects(25);
 }
 
 export async function fetchCertifications() {
-  return api.get("/certifications").then(() => generateCertifications(50));
+  return generateCertifications(50);
 }
 
 export async function fetchTraining() {
-  return api.get("/training").then(() => generateTraining(30));
+  return generateTraining(30);
 }

@@ -1,9 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Eye, Filter, Search } from "lucide-react";
+import { ArrowUpDown, Building2, Briefcase, Clock3, Eye, Filter, Search, ShieldCheck, AlertTriangle, User2 } from "lucide-react";
 import { fetchEmployees } from "@/services/mock-api";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,14 +15,108 @@ export function EmployeeTable() {
   const [globalFilter, setGlobalFilter] = useState("");
 
   const columns = useMemo<ColumnDef<Employee>[]>(() => [
-    { accessorKey: "id", header: "Employee ID" },
-    { accessorKey: "name", header: "Name" },
-    { accessorKey: "department", header: "Department" },
-    { accessorKey: "designation", header: "Designation" },
-    { accessorKey: "manager", header: "Manager" },
-    { accessorKey: "experience", header: "Experience" },
-    { accessorKey: "availability", header: "Availability" },
-    { accessorKey: "status", header: "Status" },
+    {
+      accessorKey: "id",
+      header: "Employee ID",
+      cell: ({ getValue }) => <span className="font-medium text-[var(--text-heading)]">{getValue<string>()}</span>,
+    },
+    {
+      accessorKey: "name",
+      header: "Name",
+      cell: ({ row }) => (
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-[var(--border-light)] bg-[var(--bg-section)]">
+            {row.original.photo ? (
+              <Image
+                src={row.original.photo}
+                alt={row.original.name}
+                width={40}
+                height={40}
+                className="h-10 w-10 rounded-full object-cover"
+                unoptimized
+                onError={(event) => {
+                  const target = event.currentTarget as HTMLImageElement;
+                  target.src = "/img/avatar-placeholder.svg";
+                }}
+              />
+            ) : (
+              <User2 size={20} className="text-[var(--text-muted)]" />
+            )}
+          </div>
+          <div>
+            <p className="font-medium text-[var(--text-heading)]">{row.original.name}</p>
+            <p className="text-[var(--text-muted)] text-xs">{row.original.email}</p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "department",
+      header: "Department",
+      cell: ({ getValue }) => (
+        <div className="inline-flex items-center gap-2 text-[var(--text-muted)]">
+          <Building2 size={14} />
+          <span>{getValue<string>()}</span>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "designation",
+      header: "Designation",
+      cell: ({ getValue }) => (
+        <div className="inline-flex items-center gap-2 text-[var(--text-muted)]">
+          <Briefcase size={14} />
+          <span>{getValue<string>()}</span>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "manager",
+      header: "Manager",
+      cell: ({ getValue }) => (
+        <div className="inline-flex items-center gap-2 text-[var(--text-muted)]">
+          <User2 size={14} />
+          <span>{getValue<string>()}</span>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "experience",
+      header: "Experience",
+      cell: ({ getValue }) => (
+        <div className="inline-flex items-center gap-2 text-[var(--text-muted)]">
+          <Clock3 size={14} />
+          <span>{getValue<number>()} yrs</span>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "availability",
+      header: "Availability",
+      cell: ({ getValue }) => {
+        const availability = getValue<string>();
+        const isAvailable = availability === "Available";
+        return (
+          <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${isAvailable ? "bg-emerald-100 text-emerald-700" : availability === "On Leave" ? "bg-amber-100 text-amber-700" : "bg-slate-100 text-slate-700"}`}>
+            <ShieldCheck size={12} />
+            {availability}
+          </span>
+        );
+      },
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ getValue }) => {
+        const status = getValue<string>();
+        return (
+          <span className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${status === "Active" ? "bg-[var(--brand-red)]/10 text-[var(--brand-red)]" : status === "Pending" ? "bg-amber-100 text-amber-700" : "bg-slate-100 text-slate-700"}`}>
+            {status === "Active" ? <ShieldCheck size={12} /> : <AlertTriangle size={12} />}
+            {status}
+          </span>
+        );
+      },
+    },
   ], []);
 
   const table = useReactTable({
@@ -73,9 +168,9 @@ export function EmployeeTable() {
             </thead>
             <tbody>
               {table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="border-b border-[var(--border-subtle)] last:border-0">
+                <tr key={row.id} className="border-b border-[var(--border-subtle)] last:border-0 hover:bg-[var(--bg-section)]/70">
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-3 py-3">{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                    <td key={cell.id} className="px-3 py-3 align-top">{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
                   ))}
                 </tr>
               ))}

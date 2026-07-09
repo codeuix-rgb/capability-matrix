@@ -8,6 +8,15 @@ const managers = ["Nina Foster", "Adrian Cole", "Priya Menon", "Marcus Lin", "Le
 const skills = ["React", "TypeScript", "Node.js", "Python", "Figma", "Azure", "Salesforce", "Data Modeling", "Kubernetes", "AI Strategy", "Security Review", "Compliance", "Leadership", "Product Thinking"];
 const skillCategories: Array<"Technical" | "Functional" | "Domain" | "Leadership" | "Digital" | "Cloud" | "Data" | "DevOps" | "Security" | "AI"> = ["Technical", "Functional", "Domain", "Leadership", "Digital", "Cloud", "Data", "DevOps", "Security", "AI"];
 
+const employeeAvatars = [
+  "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=120&h=120&fit=crop",
+  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&h=120&fit=crop",
+  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&h=120&fit=crop",
+  "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=120&h=120&fit=crop",
+  "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?w=120&h=120&fit=crop",
+  "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&h=120&fit=crop",
+];
+
 export function generateEmployees(count = 100): Employee[] {
   return Array.from({ length: count }, (_, index) => ({
     id: `EMP-${String(index + 1).padStart(4, "0")}`,
@@ -21,7 +30,7 @@ export function generateEmployees(count = 100): Employee[] {
     projects: [`Project ${index % 8 + 1}`, `Platform ${index % 5 + 1}`],
     availability: index % 5 === 0 ? "Booked" : index % 7 === 0 ? "On Leave" : "Available",
     status: index % 6 === 0 ? "Pending" : index % 9 === 0 ? "Review" : "Active",
-    photo: `https://images.unsplash.com/photo-${(index % 4) + 1}??w=120&h=120&fit=crop`,
+    photo: employeeAvatars[index % employeeAvatars.length],
     proficiency: 60 + (index % 40),
   }));
 }

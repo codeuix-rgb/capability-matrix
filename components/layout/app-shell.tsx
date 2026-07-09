@@ -26,11 +26,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-body)]">
       <div className="flex min-h-screen">
-        <aside className={cn("hidden border-r border-[var(--border-subtle)] bg-[var(--bg-section)]/80  lg:flex lg:flex-col", sidebarCollapsed ? "w-24" : "w-72")}> 
+        <aside className={cn("hidden border-r border-[var(--border-subtle)] bg-[var(--bg-section)]/80 lg:flex lg:flex-col sticky top-0 h-screen", sidebarCollapsed ? "w-24" : "w-72")}> 
           <div className="flex items-center justify-between rounded-2xl bg-[linear-gradient(135deg,var(--card-grad-from),var(--card-grad-to))] p-5">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl overflow-hidden">
-                <Image src="/img/logo.kaara.png" alt="Capability Matrix" width={40} height={40} className="object-cover" />
+                <Image src="/img/logo.kaara.png" alt="Capability Matrix" width={40} height={40} className="object-cover w-auto h-auto" style={{ width: "auto", height: "auto" }} />
               </div>
               {!sidebarCollapsed && (
                 <div>
