@@ -1,13 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, BrainCircuit, BriefcaseBusiness, Cloud, Code2, Database, Filter, Layers3, Search, ShieldCheck, Sparkles, TrendingUp, Users2, Wrench, X, Zap, type LucideIcon } from "lucide-react";
-import * as Dialog from "@radix-ui/react-dialog";
 import { fetchSkills } from "@/services/mock-api";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { SkillManager } from "@/components/skills/skill-manager";
 import type { SkillCategory } from "@/types";
 
 const categoryMeta: Record<SkillCategory, { icon: LucideIcon; description: string }> = {
@@ -74,6 +73,27 @@ export function SkillsOverview() {
       .slice(0, 4);
   }, [data]);
 
+  const skillsRoadmap = [
+    {
+      title: "Map capability gaps",
+      description: "Surface the skills that need investment first for your teams and projects.",
+      badge: "Now",
+      progress: "72%",
+    },
+    {
+      title: "Focus on high-value clusters",
+      description: "Prioritize training for Cloud, AI, and leadership skills with strong delivery demand.",
+      badge: "Next",
+      progress: "44%",
+    },
+    {
+      title: "Scale capability adoption",
+      description: "Track growth, share insights, and connect skill readiness to business outcomes.",
+      badge: "Future",
+      progress: "18%",
+    },
+  ];
+
   const totalPages = Math.ceil(filteredSkills.length / pageSize);
   const paginatedSkills = useMemo(() => {
     const start = (currentPage - 1) * pageSize;
@@ -101,10 +121,12 @@ export function SkillsOverview() {
             Discover the most valuable skills, spot gaps quickly, and guide development planning with a polished, insight-rich view of the talent landscape.
           </p>
         </div>
-        <Button className="w-fit rounded-full">
-          Explore roadmap
-          <ArrowRight size={16} />
-        </Button>
+        <a href="#skills-roadmap" className="w-fit">
+          <Button className="w-fit rounded-full">
+            View skills roadmap
+            <ArrowRight size={16} />
+          </Button>
+        </a>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -127,6 +149,40 @@ export function SkillsOverview() {
         })}
       </div>
 
+      <section id="skills-roadmap" className="rounded-[28px] border border-[var(--border-subtle)] bg-[var(--bg-section)] p-6 shadow-[0_15px_45px_rgba(0,0,0,0.06)]">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="max-w-2xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--brand-red)]">Skills roadmap</p>
+            <h3 className="mt-2 text-2xl font-semibold text-[var(--text-heading)]">Align skill planning with capability priorities</h3>
+            <p className="mt-3 text-sm text-[var(--text-muted)]">
+              Use this overview to focus development investment on the highest-impact skill clusters and accelerate capability adoption across the business.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-[var(--border-light)] bg-[var(--bg-card)]/80 px-4 py-3 text-sm text-[var(--text-muted)]">
+            {filteredSkills.length} skills available
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-4 lg:grid-cols-3">
+          {skillsRoadmap.map((item) => (
+            <div key={item.title} className="rounded-[24px] border border-[var(--border-light)] bg-[var(--bg-card)] p-5 shadow-[0_16px_35px_rgba(0,0,0,0.05)] transition hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(0,0,0,0.08)]">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-lg font-semibold text-[var(--text-heading)]">{item.title}</p>
+                <span className="rounded-full bg-[var(--bg-section)] px-3 py-1 text-xs font-semibold text-[var(--text-muted)]">{item.badge}</span>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-[var(--text-muted)]">{item.description}</p>
+              <div className="mt-5 flex items-center justify-between gap-3 text-sm font-semibold text-[var(--text-heading)]">
+                <span>Roadmap progress</span>
+                <span className="text-[var(--brand-red)]">{item.progress}</span>
+              </div>
+              <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-[var(--bg-section)]">
+                <div className="h-full rounded-full bg-[var(--brand-red)]" style={{ width: item.progress }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <div className="grid gap-6 xl:grid-cols-[1.45fr_0.85fr]">
         <Card className="overflow-hidden">
           <CardHeader>
@@ -134,35 +190,6 @@ export function SkillsOverview() {
               <p className="text-sm font-semibold text-[var(--text-heading)]">Skill library</p>
               <p className="text-sm text-[var(--text-muted)]">Search, filter, and prioritize capabilities</p>
             </div>
-            <Dialog.Root>
-              <Dialog.Trigger asChild>
-                <Button variant="secondary" className="gap-2 rounded-full">
-                  <Sparkles size={16} />
-                  Manage skills
-                </Button>
-              </Dialog.Trigger>
-              <Dialog.Portal>
-                <Dialog.Overlay className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm" />
-                <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[68vw] max-w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 rounded-[28px] border border-[var(--border-subtle)] bg-[var(--bg-primary)] p-6 shadow-[0_30px_80px_rgba(0,0,0,0.35)]">
-                  <div className="flex flex-col gap-4 rounded-[24px] border border-[var(--border-subtle)] bg-[var(--bg-card)] p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                      <Dialog.Title className="text-xl font-semibold text-[var(--text-heading)]">Edit your skill set</Dialog.Title>
-                      <Dialog.Description className="mt-1 text-sm text-[var(--text-muted)]">
-                        Update your personal capability profile with the live skill manager and save changes instantly.
-                      </Dialog.Description>
-                    </div>
-                    <Dialog.Close asChild>
-                      <Button variant="outline" size="sm" className="rounded-full">
-                        Close
-                      </Button>
-                    </Dialog.Close>
-                  </div>
-                  <div className="mt-6 rounded-[24px] border border-[var(--border-subtle)] bg-[var(--bg-section)] p-5">
-                    <SkillManager />
-                  </div>
-                </Dialog.Content>
-              </Dialog.Portal>
-            </Dialog.Root>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex flex-col gap-3 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-section)]/70 p-3 md:flex-row md:items-center">

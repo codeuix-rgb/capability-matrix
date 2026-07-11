@@ -64,7 +64,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <Link
                   key={item.id}
                   href={item.href ?? "/"}
-                  className={cn(linkBase, active ? "bg-[var(--brand-red)] text-white" : "text-[var(--text-muted)] hover:bg-white")}
+                  className={cn(
+                    linkBase,
+                    active
+                      ? "bg-[var(--brand-red)] text-white"
+                      : "text-[var(--text-muted)] hover:bg-[var(--bg-section)]/40"
+                  )}
                 >
                   <Icon size={18} className={sidebarCollapsed ? "mx-auto" : ""} />
                   {!sidebarCollapsed && <span>{item.label}</span>}
@@ -73,7 +78,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             })}
           </nav>
 
-          <div className="rounded-2xl border border-[var(--border-light)] bg-white/70 p-3 text-sm">
+          <div className="rounded-2xl border border-[var(--border-light)] bg-[var(--bg-card)]/80 p-3 text-sm">
             <p className="font-semibold text-[var(--text-heading)]">Next review</p>
             <p className="mt-1 text-[var(--text-muted)]">8 certifications renew this week</p>
           </div>

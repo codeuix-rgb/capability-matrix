@@ -1,4 +1,4 @@
-import { buildDashboardSummary, generateCertifications, generateEmployees, generateProjects, generateSkills, generateTraining } from "@/lib/mock-data";
+import { buildDashboardSummary, generateCertifications, generateEmployees, generateProfile, generateProjects, generateSkills, generateTraining } from "@/lib/mock-data";
 
 export async function fetchDashboardData() {
   const employees = generateEmployees(100);
@@ -23,6 +23,14 @@ export async function fetchEmployees() {
 
 export async function fetchSkills() {
   return generateSkills(200);
+}
+
+export async function fetchProfile(userId = "EMP-0001") {
+  return generateProfile(userId);
+}
+
+export async function saveProfile(profile: import("@/types").Profile) {
+  return profile;
 }
 
 export async function fetchProjects() {

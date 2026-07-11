@@ -1,4 +1,4 @@
-import type { Certification, DashboardSummary, Employee, Project, Skill, TrainingRecord } from "@/types";
+import type { Certification, DashboardSummary, Employee, Project, Profile, Skill, TrainingRecord } from "@/types";
 
 const firstNames = ["Ava", "Noah", "Mia", "Liam", "Sophia", "Ethan", "Emma", "Lucas", "Olivia", "Mason", "Isabella", "James", "Harper", "Benjamin", "Evelyn", "Elijah", "Amelia", "Logan", "Charlotte", "Henry"];
 const lastNames = ["Patel", "Nguyen", "Johnson", "Kim", "Lee", "Garcia", "Chen", "Singh", "Brown", "Davis", "Wilson", "Martinez", "Taylor", "Anderson", "Thomas", "Jackson", "White", "Harris", "Clark", "Lewis"];
@@ -6,6 +6,8 @@ const departments = ["Engineering", "Design", "Analytics", "Operations", "Financ
 const designations = ["Principal Engineer", "Product Designer", "Data Scientist", "Program Manager", "Finance Lead", "HR Business Partner", "Solution Architect", "Security Analyst"];
 const managers = ["Nina Foster", "Adrian Cole", "Priya Menon", "Marcus Lin", "Lena Ortiz", "Daniel Brooks", "Sofia Green", "Robert Kim"];
 const skills = ["React", "TypeScript", "Node.js", "Python", "Figma", "Azure", "Salesforce", "Data Modeling", "Kubernetes", "AI Strategy", "Security Review", "Compliance", "Leadership", "Product Thinking"];
+const certificationsPool = ["Azure Fundamentals", "AWS Solutions Architect", "Certified ScrumMaster", "Google Cloud Professional", "CISSP", "Salesforce Administrator"];
+const roles = ["Software Engineer", "Data Analyst", "Product Manager", "Cloud Architect", "Security Lead", "Solution Architect", "Engineering Manager"];
 const skillCategories: Array<"Technical" | "Functional" | "Domain" | "Leadership" | "Digital" | "Cloud" | "Data" | "DevOps" | "Security" | "AI"> = ["Technical", "Functional", "Domain", "Leadership", "Digital", "Cloud", "Data", "DevOps", "Security", "AI"];
 
 const employeeAvatars = [
@@ -33,6 +35,26 @@ export function generateEmployees(count = 100): Employee[] {
     photo: employeeAvatars[index % employeeAvatars.length],
     proficiency: 60 + (index % 40),
   }));
+}
+
+export function generateProfile(userId = "EMP-0001"): Profile {
+  const primaryRole = roles[Math.floor(Math.random() * roles.length)];
+  const primarySkillSet = `${skills[Math.floor(Math.random() * skills.length)]}, ${skills[Math.min(Math.floor(Math.random() * skills.length), skills.length - 1)]}`;
+  const secondarySkills = [skills[(Math.floor(Math.random() * skills.length) + 3) % skills.length], skills[(Math.floor(Math.random() * skills.length) + 5) % skills.length]];
+  const certifications = [certificationsPool[Math.floor(Math.random() * certificationsPool.length)], certificationsPool[(Math.floor(Math.random() * certificationsPool.length) + 1) % certificationsPool.length]];
+
+  return {
+    id: `PROF-${userId}`,
+    userId,
+    primaryRole,
+    primarySkillSet,
+    overallExperienceYears: 4 + (Math.floor(Math.random() * 12)),
+    secondarySkills,
+    certifications,
+    notes: "Strong delivery experience with enterprise SaaS and modern cloud platforms.",
+    lastSnapshot: new Date().toISOString().split("T")[0],
+    status: "Draft",
+  };
 }
 
 export function generateSkills(count = 200): Skill[] {

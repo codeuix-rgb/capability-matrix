@@ -38,6 +38,19 @@ export interface Skill {
   averageProficiency: number;
 }
 
+export interface Profile {
+  id: string;
+  userId: string;
+  primaryRole: string;
+  primarySkillSet: string;
+  overallExperienceYears: number;
+  secondarySkills: string[];
+  certifications: string[];
+  notes: string;
+  lastSnapshot: string;
+  status: "Draft" | "Submitted" | "Approved" | "Revision Requested";
+}
+
 export interface Project {
   id: string;
   name: string;

@@ -1,9 +1,10 @@
-import { BriefcaseBusiness, FileText, GraduationCap, LayoutDashboard, Settings, ShieldCheck, Sparkles, Users2, BadgeCheck, Route } from "lucide-react";
+import { BriefcaseBusiness, FileText, GraduationCap, LayoutDashboard, Settings, ShieldCheck, Sparkles, Users2, BadgeCheck, Route, UserCircle2 } from "lucide-react";
 
 export const navigationItems = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, href: "/" },
   { id: "employees", label: "Employees", icon: Users2, href: "/employees" },
   { id: "skills", label: "Skills", icon: Sparkles, href: "/skills" },
+  { id: "profile", label: "Profile", icon: UserCircle2, href: "/profile" },
   { id: "projects", label: "Projects", icon: BriefcaseBusiness, href: "/projects" },
   { id: "certifications", label: "Certifications", icon: BadgeCheck, href: "/certifications" },
   { id: "training", label: "Training", icon: GraduationCap, href: "/training" },
