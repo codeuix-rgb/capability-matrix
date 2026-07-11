@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, FileText, GraduationCap, Layers3, LayoutDashboard, Settings, ShieldCheck, Sparkles, Users2, BadgeCheck } from "lucide-react";
+import { BriefcaseBusiness, FileText, GraduationCap, LayoutDashboard, Settings, ShieldCheck, Sparkles, Users2, BadgeCheck, Route } from "lucide-react";
 
 export const navigationItems = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, href: "/" },
@@ -8,6 +8,7 @@ export const navigationItems = [
   { id: "certifications", label: "Certifications", icon: BadgeCheck, href: "/certifications" },
   { id: "training", label: "Training", icon: GraduationCap, href: "/training" },
   { id: "reports", label: "Reports", icon: FileText, href: "/reports" },
+  { id: "roadmap", label: "Roadmap", icon: Route, href: "/roadmap" },
   { id: "administration", label: "Administration", icon: ShieldCheck, href: "/administration" },
   { id: "settings", label: "Settings", icon: Settings, href: "/settings" },
 ];
