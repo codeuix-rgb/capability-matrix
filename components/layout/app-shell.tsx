@@ -12,11 +12,20 @@ import { cn } from "@/lib/utils";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { sidebarCollapsed, searchOpen, theme, setSidebarCollapsed, setSearchOpen, setTheme } = useAppStore();
+  const { sidebarCollapsed, searchOpen, theme, setSidebarCollapsed, setSearchOpen, setTheme, user, login, logout } = useAppStore();
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
   }, [theme]);
+
+  const handleAuth = () => {
+    if (user) {
+      logout();
+      return;
+    }
+
+    login({ name: "Alicia Chen", email: "alicia.chen@example.com" });
+  };
 
   const pageTitle = useMemo(() => {
     const current = navigationItems.find((item) => item.id === pathname.split("/").filter(Boolean)[0]);
@@ -87,9 +96,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <Button variant="outline" size="icon" onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
                   {theme === "light" ? <Moon size={16} /> : <SunMedium size={16} />}
                 </Button>
-                <Button variant="secondary" className="gap-2 rounded-full">
+                <Button variant="secondary" className="gap-2 rounded-full" onClick={handleAuth}>
                   <UserCircle2 size={16} />
-                  <span className="hidden sm:inline">Alicia Chen</span>
+                  <span className="hidden sm:inline">{user ? user.name : "Sign in"}</span>
                 </Button>
               </div>
             </div>
