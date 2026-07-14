@@ -94,3 +94,33 @@ export interface DashboardSummary {
   employeesAvailable: number;
   employeesOnProjects: number;
 }
+
+export interface TimesheetEntry {
+  id: string;
+  employeeId: string;
+  date: string;
+  project: string;
+  hours: number;
+  remarks: string;
+  isLeave: boolean;
+  isBench: boolean;
+  isHoliday: boolean;
+  isOnboarding: boolean;
+  status: "Draft" | "Submitted" | "Approved" | "Rejected";
+}
+
+export interface TimesheetWeek {
+  id: string;
+  employeeId: string;
+  employeeName: string;
+  employeeEmail?: string;
+  startDate: string;
+  endDate: string;
+  entries: TimesheetEntry[];
+  totalHours: number;
+  status: "Draft" | "Submitted" | "Approved" | "Rejected";
+  submittedDate?: string;
+  approvedBy?: string;
+  approvedDate?: string;
+  rejectionReason?: string;
+}

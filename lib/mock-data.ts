@@ -1,4 +1,4 @@
-import type { Certification, DashboardSummary, Employee, Project, Profile, Skill, TrainingRecord } from "@/types";
+import type { Certification, DashboardSummary, Employee, Project, Profile, Skill, TrainingRecord, TimesheetEntry, TimesheetWeek } from "@/types";
 
 const firstNames = ["Ava", "Noah", "Mia", "Liam", "Sophia", "Ethan", "Emma", "Lucas", "Olivia", "Mason", "Isabella", "James", "Harper", "Benjamin", "Evelyn", "Elijah", "Amelia", "Logan", "Charlotte", "Henry"];
 const lastNames = ["Patel", "Nguyen", "Johnson", "Kim", "Lee", "Garcia", "Chen", "Singh", "Brown", "Davis", "Wilson", "Martinez", "Taylor", "Anderson", "Thomas", "Jackson", "White", "Harris", "Clark", "Lewis"];
@@ -8,6 +8,7 @@ const managers = ["Nina Foster", "Adrian Cole", "Priya Menon", "Marcus Lin", "Le
 const skills = ["React", "TypeScript", "Node.js", "Python", "Figma", "Azure", "Salesforce", "Data Modeling", "Kubernetes", "AI Strategy", "Security Review", "Compliance", "Leadership", "Product Thinking"];
 const certificationsPool = ["Azure Fundamentals", "AWS Solutions Architect", "Certified ScrumMaster", "Google Cloud Professional", "CISSP", "Salesforce Administrator"];
 const roles = ["Software Engineer", "Data Analyst", "Product Manager", "Cloud Architect", "Security Lead", "Solution Architect", "Engineering Manager"];
+const projectNames = ["Kaara One", "Kaara Internal Project", "Microsoft", "Azure Migration", "Platform Modernization", "Data Analytics", "Security Audit", "Cloud Integration"];
 const skillCategories: Array<"Technical" | "Functional" | "Domain" | "Leadership" | "Digital" | "Cloud" | "Data" | "DevOps" | "Security" | "AI"> = ["Technical", "Functional", "Domain", "Leadership", "Digital", "Cloud", "Data", "DevOps", "Security", "AI"];
 
 const employeeAvatars = [
@@ -121,4 +122,107 @@ export function buildDashboardSummary(employees: Employee[], skills: Skill[], ce
     employeesAvailable: employees.filter((item) => item.availability === "Available").length,
     employeesOnProjects: employees.filter((item) => item.projects.length > 0).length,
   };
+}
+
+export function generateTimesheetEntries(employeeId: string, startDate: string, dayCount = 7): TimesheetEntry[] {
+  const entries: TimesheetEntry[] = [];
+  const start = new Date(startDate);
+
+  for (let i = 0; i < dayCount; i++) {
+    const date = new Date(start);
+    date.setDate(date.getDate() + i);
+    const dateStr = date.toISOString().split("T")[0];
+
+    // Skip weekends (Saturday = 6, Sunday = 0)
+    const dayOfWeek = date.getDay();
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+      continue;
+    }
+
+    const isLeave = Math.random() < 0.05;
+    const isBench = Math.random() < 0.1;
+    const isHoliday = Math.random() < 0.02;
+    const isOnboarding = Math.random() < 0.03;
+
+    let hours = 0;
+    let remarks = "";
+
+    if (isLeave) {
+      hours = 0;
+      remarks = "On Leave";
+    } else if (isBench) {
+      hours = 0;
+      remarks = "Bench";
+    } else if (isHoliday) {
+      hours = 0;
+      remarks = "Holiday";
+    } else if (isOnboarding) {
+      hours = 8;
+      remarks = "Onboarding activities";
+    } else {
+      hours = 8;
+      const project = projectNames[Math.floor(Math.random() * (projectNames.length - 1))];
+      remarks = `Working on ${project}`;
+    }
+
+    entries.push({
+      id: `TS-${employeeId}-${dateStr}`,
+      employeeId,
+      date: dateStr,
+      project: isLeave || isBench || isHoliday ? "N/A" : projectNames[Math.floor(Math.random() * (projectNames.length - 1))],
+      hours,
+      remarks,
+      isLeave,
+      isBench,
+      isHoliday,
+      isOnboarding,
+      status: Math.random() < 0.3 ? "Submitted" : Math.random() < 0.1 ? "Approved" : "Draft",
+    });
+  }
+
+  return entries;
+}
+
+export function generateTimesheetWeek(employeeId: string, employeeName: string, employeeEmail: string, startDate: string): TimesheetWeek {
+  const entries = generateTimesheetEntries(employeeId, startDate);
+  const totalHours = entries.reduce((sum, entry) => sum + entry.hours, 0);
+
+  const end = new Date(startDate);
+  end.setDate(end.getDate() + 6);
+  const endDateStr = end.toISOString().split("T")[0];
+
+  const statuses: Array<"Draft" | "Submitted" | "Approved" | "Rejected"> = ["Draft", "Submitted", "Approved"];
+  const status = statuses[Math.floor(Math.random() * statuses.length)];
+
+  return {
+    id: `TSW-${employeeId}-${startDate}`,
+    employeeId,
+    employeeName,
+    employeeEmail,
+    startDate,
+    endDate: endDateStr,
+    entries,
+    totalHours,
+    status,
+    submittedDate: status !== "Draft" ? new Date().toISOString().split("T")[0] : undefined,
+    approvedBy: status === "Approved" ? managers[Math.floor(Math.random() * managers.length)] : undefined,
+    approvedDate: status === "Approved" ? new Date().toISOString().split("T")[0] : undefined,
+  };
+}
+
+export function generateTimesheets(weekStartDate: string): TimesheetWeek[] {
+  const employees = generateEmployees(20); // Generate 20 timesheets
+  return employees.map((emp) => generateTimesheetWeek(emp.id, emp.name, emp.email, weekStartDate));
+}
+
+export function generateTimesheetForApproval(weekStartDate: string): TimesheetWeek[] {
+  const timesheets = generateTimesheets(weekStartDate);
+  // Set some for manager approval
+  return timesheets.map((ts, index) => {
+    if (index % 3 === 0) {
+      ts.status = "Submitted";
+      ts.submittedDate = new Date().toISOString().split("T")[0];
+    }
+    return ts;
+  });
 }

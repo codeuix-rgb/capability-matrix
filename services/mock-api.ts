@@ -1,4 +1,4 @@
-import { buildDashboardSummary, generateCertifications, generateEmployees, generateProfile, generateProjects, generateSkills, generateTraining } from "@/lib/mock-data";
+import { buildDashboardSummary, generateCertifications, generateEmployees, generateProfile, generateProjects, generateSkills, generateTraining, generateTimesheets, generateTimesheetForApproval } from "@/lib/mock-data";
 
 export async function fetchDashboardData() {
   const employees = generateEmployees(100);
@@ -43,4 +43,24 @@ export async function fetchCertifications() {
 
 export async function fetchTraining() {
   return generateTraining(30);
+}
+
+export async function fetchTimesheets(weekStartDate: string) {
+  return generateTimesheets(weekStartDate);
+}
+
+export async function fetchTimesheetsForApproval(weekStartDate: string) {
+  return generateTimesheetForApproval(weekStartDate);
+}
+
+export async function saveTimesheetEntry(entry: import("@/types").TimesheetEntry) {
+  return { ...entry, status: "Submitted" as const };
+}
+
+export async function approveTimesheet(timesheetId: string, approvedBy: string) {
+  return { id: timesheetId, status: "Approved", approvedBy, approvedDate: new Date().toISOString().split("T")[0] };
+}
+
+export async function rejectTimesheet(timesheetId: string, rejectionReason: string) {
+  return { id: timesheetId, status: "Rejected", rejectionReason };
 }
